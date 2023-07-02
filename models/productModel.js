@@ -76,4 +76,24 @@ productSchema.pre(/^find/, function (next) {
   next();
 });
 
+const setImageUrl = (doc) => {
+  if (doc.imageCover) {
+    const imageURL = `${process.env.BASE_URL}/products/${doc.imageCover}`;
+    doc.imageCover = imageURL;
+  }
+  if (doc.images) {
+    const imagesList = [];
+    doc.images.forEach((image) => {
+      const imageURL = `${process.env.BASE_URL}/products/${image}`;
+      imagesList.push(imageURL);
+    });
+    doc.images = imagesList;
+  }
+};
+productSchema.post("init", (doc) => {
+  setImageUrl(doc);
+});
+productSchema.post("save", (doc) => {
+  setImageUrl(doc);
+});
 module.exports = mongoose.model("Product", productSchema);

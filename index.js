@@ -8,6 +8,7 @@ const globalError = require("./middlewares/errorMiddleware");
 const subCategoryRoute = require("./routes/subCategoryRoute");
 const brandRoute = require("./routes/brandRoute");
 const productRoute = require("./routes/productRoute");
+const path = require("path");
 
 dotenv.config({ path: "config.env" });
 
@@ -23,7 +24,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(express.json());
-
+app.use(express.static(path.join(__dirname, "uploads")));
 //Mount Routes
 app.use("/api/v1/categories", categoryRoute);
 app.use("/api/v1/subcategories", subCategoryRoute);
